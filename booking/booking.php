@@ -58,95 +58,66 @@
         (List of hotels in that city)
       </ul>
     </h3>
+    
 
+    <!--DATE RANGE -->
     <h3>Booking dates:</h3>
-    <label for="start date:">start date:</label>
-    <input type="date" name="startdate" id="startdate" />
+    <form method="post">
+      <label for="start date:">start date:</label>
+      <input type="date" name="startdate" id="startdate"/>
+    
+      <label for="enddate:">end date:</label>
+      <input type="date" name="enddate" id="enddate"/>
 
-    <label for="enddate:">end date:</label>
-    <input type="date" name="enddate" id="enddate" />
+      <input type="submit" value="Check Dates" name="checkDateID"/>
+    </form>
+    
+    <?php
+    if ( isset( $_POST['checkDateID'] ) ) { 
+        $startDate = $_REQUEST['startdate'];
+        $endDate = $_REQUEST['enddate'];
 
-    <button
-      type="button"
-      action="/views/bookingComplete.html"
-      id="submit"
-      value="Submit"
-    >
-      Submit
-    </button>
+        $today = date("Y/m/d");
+        echo "today: ", $today;
+        echo "<br>";
+        echo "START: ".$startDate, "   END: ".$endDate;
+        echo "<br>";
+        echo "IF 1",( $startDate < $today);
+        echo "<br>";
 
-    <!--SCRIPTS-->
-    <script type="javascript" src="/src/validator.min.js"></script>
-    <script type="text/javascript">
-      console.log('RECIEVED');
+        if($startDate > $today){
+          $startDate = $today;
+          echo "first ";
+          echo "<br>";
 
-      var didClickIt = false;
-      document.getElementById('submit').addEventListener('click', function() {
-        didClickIt = true;
-      });
-
-      setInterval(function() {
-        var todayDate = new Date();
-
-        if (didClickIt) {
-          didClickIt = false;
-          var start = document.getElementById('startdate').value;
-          var startYear = start.substring(0, 4);
-          var startMonth = start.substring(5, 7);
-          var startDay = start.substring(8, 10);
-          // start date to use in comparison
-          var startDate = new Date(startYear, startMonth, startDay);
-
-          var end = document.getElementById('enddate').value;
-          var endYear = end.substring(0, 4);
-          var endMonth = end.substring(5, 7);
-          var endDay = end.substring(8, 10);
-          // end date to use in comparison
-          var endDate = new Date(endYear, endMonth, endDay);
-
-          // if start is before today, then start = today
-          if (comp(startDate, todayDate) == 1) {
-            startDate = new Date();
-            console.log('before start XX: ', startDate);
-            console.log('before end XX: ', endDate);
-          }
-          // if end is before today, then end = today
-          if (comp(endDate, todayDate) == 1) {
-            endDate = new Date();
-            console.log('before start YY: ', startDate);
-            console.log('before end YY: ', endDate);
-          }
-          // if end is before today, then end = today
-          if (comp(endDate, startDate) == 2) {
-            endDate = startDate;
-            console.log('before start ZZ: ', startDate);
-            console.log('before end ZZ: ', endDate);
-          }
-          function comp(date1, date2) {
-            if (date1 > date2) return 1;
-            else if (date1 < date2) return 2;
-            else return 0;
-          }
         }
-      }, 500);
-    </script>
+        if($endDate > $today){
+          $endDate = $today;
+          echo "second ";
+          echo "<br>";
 
-    <!--DROP DOWN SCRIPT-->
-    <script type="javascript" src="/src/middleware.js">
-      cities = getCities();
-      console.log(cities);
-      var dropdown = document.getElementById('citiesDropdown');
+        }
 
-      for (var i = 0; i < cities.length; ++i) {
-        addOption(dropdown, cities[i], cities[i]);
-      }
+        if ($endDate < $startDate){
+          $endDate = $startDate;
+          echo "third\n ";
+          echo "<br>";
 
-      addOption = function(selectbox, text, value) {
-        var optn = document.createElement('OPTION');
-        optn.text = text;
-        optn.value = value;
-        selectbox.options.add(optn);
-      };
-    </script>
+        } else if ($startDate > $endDate){
+          $temp = $startDate;
+          $startDate = $endDate;
+          $endDate = $temp;
+          echo "second\n ";
+          echo "<br>";
+
+        }
+
+        echo "START: ".$startDate, "   END: ".$endDate;
+    }
+    ?>
+    
   </body>
+
+  <button><a href="/booking/bookingConfirmation.php">Complete booking</a></button>
+
 </html>
