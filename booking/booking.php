@@ -36,7 +36,18 @@
         >
           Cities <span class="caret"></span>
         </button>
-        <ul class="dropdown-menu"></ul>
+        <ul class="dropdown-menu">
+          <?php
+            include '../database.php';
+            $get_cities_query = 'SET search_path = "HotelSystem"; SELECT city FROM hotel;';
+            $cities = pg_query($get_cities_query) or die('Query failed: ' . pg_last_error());
+
+            while ($cities_array = pg_fetch_row($cities, null, PGSQL_NUM)) {
+              echo "<li>$cities_array[0]</li>";
+            }
+
+          ?>
+        </ul>
       </div>
     </div>
     <!--END DROP DOWN-->
