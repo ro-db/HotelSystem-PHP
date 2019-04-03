@@ -27,7 +27,7 @@
             <li class="active">
               <a href="/">Home<span class="sr-only">(current)</span></a>
             </li>
-            <li><a href="/booking/booking.php">Book a room</a></li>
+            <li><a href="/booking/booking.html">Book a room</a></li>
             <li><a href="/contact">Contact us</a></li>
           </ul>
         </nav>
