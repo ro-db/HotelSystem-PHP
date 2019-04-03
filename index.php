@@ -1,37 +1,51 @@
-<html>
-    <head>
-        <title>Hello World from PHP</title>
-</head>
-<body>
-<?php
+<!DOCTYPE html>
+<title>Hotel System</title>
+<H1>Hotel System</H1>
 
-$db_conf = parse_ini_file(".db.ini");
+<!-- START OF HEAD -->
+<head>
+    <meta charset="UTF-8" />
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.3/angular-route.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"
+    />
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <script src="script.js"></script>
+  </head>
+<!-- END OF HEAD -->
 
-// Connecting, selecting database
-$dbconn = pg_connect("host=" . $db_conf["host"] . " dbname=" . $db_conf["dbname"] . " port=" . $db_conf["port"] . " user=" . $db_conf["user"] . " password=" . $db_conf["password"])
-    or die('Could not connect: ' . pg_last_error());
+<!-- START OF NAV -->
+<nav
+          class="navbar navbar-inverse"
+          role="navigation"
+          style="padding-left:130px;"
+        >
+          <ul class="nav navbar-nav">
+            <li class="active">
+              <a href="/">Home<span class="sr-only">(current)</span></a>
+            </li>
+            <li><a href="/booking/booking.php">Book a room</a></li>
+            <li><a href="/contact">Contact us</a></li>
+          </ul>
+        </nav>
+<!-- END OF NAV -->
+<!-- START OF BODY -->
+  <body>
+    <div>
 
-// Performing SQL query
-$query = 'SET search_path="HotelSystem"; SELECT * FROM hotel_chain';
-$result = pg_query($query) or die('Query failed: ' . pg_last_error());
+      <br />
+      <div class="jumbotron">
+        <p>
+          This is place to put content. You can put slider, short description
+          about your website and place some links for navigation.
+        </p>
+      </div>
+    </div>
 
-// Printing results in HTML
-echo "<table>\n";
-while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
-    echo "\t<tr>\n";
-    foreach ($line as $col_value) {
-        echo "\t\t<td>$col_value</td>\n";
-    }
-    echo "\t</tr>\n";
-}
-echo "</table>\n";
-
-// Free resultset
-pg_free_result($result);
-
-// Closing connection
-pg_close($dbconn);
-
-?>
-</body>
+  </body>
+<!-- END OF BODY -->
 </html>
+
