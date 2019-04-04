@@ -64,62 +64,7 @@
 
     <!--DATE RANGE -->
     <h3>Booking dates:</h3>
-<<<<<<< HEAD:booking/booking.php
-    <form method="post">
-      <label for="start date:">start date:</label>
-      <input type="date" name="startdate" id="startdate"/>
-    
-      <label for="enddate:">end date:</label>
-      <input type="date" name="enddate" id="enddate"/>
 
-      <input type="submit" value="Check Dates" name="checkDateID"/>
-    </form>
-    
-    <?php
-    if ( isset( $_POST['checkDateID'] ) ) { 
-        $startDate = $_REQUEST['startdate'];
-        $endDate = $_REQUEST['enddate'];
-
-        $today = date("Y/m/d");
-        echo "today: ", $today;
-        echo "<br>";
-        echo "START: ".$startDate, "   END: ".$endDate;
-        echo "<br>";
-        echo "IF 1",( $startDate < $today);
-        echo "<br>";
-
-        if($startDate > $today){
-          $startDate = $today;
-          echo "first ";
-          echo "<br>";
-
-        }
-        if($endDate > $today){
-          $endDate = $today;
-          echo "second ";
-          echo "<br>";
-
-        }
-
-        if ($endDate < $startDate){
-          $endDate = $startDate;
-          echo "third\n ";
-          echo "<br>";
-
-        } else if ($startDate > $endDate){
-          $temp = $startDate;
-          $startDate = $endDate;
-          $endDate = $temp;
-          echo "second\n ";
-          echo "<br>";
-
-        }
-
-        echo "START: ".$startDate, "   END: ".$endDate;
-    }
-    ?>
-    
-=======
     <form id="requestBookingForm">
 
     <label for="start date:">start date:</label>
@@ -154,7 +99,6 @@
     <!--SCRIPTS-->
     <script type="javascript" src="/src/validator.min.js"></script>
    
->>>>>>> rawad:booking/booking.html
   </body>
 
   <button><a href="/booking/bookingConfirmation.php">Complete booking</a></button>
