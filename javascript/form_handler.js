@@ -1,12 +1,12 @@
 function processBookingForm(e) {
   if (e.preventDefault) e.preventDefault();
 
-  var startDateString = document.getElementById("startdate").value;
+  var startDateString = document.getElementById('startdate').value;
 
   // start date to use in compareDatesarison
   var startDate = new Date(startDateString);
 
-  var endDateString = document.getElementById("enddate").value;
+  var endDateString = document.getElementById('enddate').value;
 
   // end date to use in compareDatesarison
   var endDate = new Date(endDateString);
@@ -22,25 +22,26 @@ function processBookingForm(e) {
     endDate = startDate;
   }
 
-  console.log("Start date: ", startDate);
-  console.log("End date: ", endDate);
+  console.log('Start date: ', startDate);
+  console.log('End date: ', endDate);
 
   var xmlhttp = new XMLHttpRequest();
 
-  xmlhttp.open("POST", "/booking/search_result.php", true);
+  xmlhttp.open('POST', '/booking/search_result.php', true);
+  xmlhttp.open('POST', '/employee/rent.php', true);
 
   xmlhttp.onreadystatechange = function() {
     if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
       console.log(this.responseText);
-      document.getElementById("resultsDiv").innerHTML = this.responseText;
+      document.getElementById('resultsDiv').innerHTML = this.responseText;
     } else {
-      console.log("Error:", this.statusText);
+      console.log('Error:', this.statusText);
     }
   };
 
-  xmlhttp.addEventListener("load", function() {});
+  xmlhttp.addEventListener('load', function() {});
 
-  xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
   xmlhttp.send(`startDate=${startDate}&endDate=${endDate}`);
 
   return false;
