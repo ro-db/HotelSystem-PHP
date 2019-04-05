@@ -100,19 +100,21 @@ if($maximumPrice > 0) {
 
 $result = pg_query("SET search_path = 'HotelSystem'; " . $room_query . ";");
 
-while ($room = pg_fetch_row($result, null, PGSQL_ASSOC)) {
+if(pg_num_rows($result) > 0) {
+    while ($room = pg_fetch_row($result, null, PGSQL_ASSOC)) {
+        
+        $room_number = $room['room_number'];
+        $price = $room['price'];
+        $capacity = $room['capacity'];
 
-    $room_number = $room['room_number'];
-    $price = $room['price'];
-    $capacity = $room['capacity'];
+        echo "<form>\n";
+        echo "<li>\n";
+        echo "Room: $room_number | Price: \$$price | Capacity: $capacity";
+        echo "<button>Book</button>";
+        echo "</li>";
+        echo "</form>";
 
-    echo "<form>\n";
-    echo "<li>\n";
-    echo "Room: $room_number | Price: \$$price | Capacity: $capacity";
-    echo "<button>Book</button>";
-    echo "<li>";
-    echo "</form>";
-
+    }
 }
 
 pg_free_result($result);
