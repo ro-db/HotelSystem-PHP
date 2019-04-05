@@ -76,7 +76,7 @@ $maximumPrice = $_POST['maximumPrice'];
 
 include $_SERVER['DOCUMENT_ROOT'] . "/php/database.php";
 
-$room_query = "SELECT hotel_id FROM hotel WHERE city='$city'";
+$room_query = "SET search_path = 'HotelSystem'; SELECT * FROM room WHERE hotel_id IN ( SELECT hotel_id FROM hotel WHERE city=@city);";
 
 if($minimumStars > 0) {
     // $room_query = $room_query . " AND (SELECT hotel_id, stars FROM hotel WHERE (hotel.hotel_id = room.hotel_id AND hotel.stars >= $minimumStars))";
