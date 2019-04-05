@@ -17,10 +17,6 @@ $address = $_POST['address'];
 
 include $_SERVER['DOCUMENT_ROOT'] . "/php/database.php";
 
-$insert_customer_and_booking_query = 'SET search_path = "HotelSystem";';
-$insert_customer_and_booking_query .= "INSERT INTO customer (SIN_NUMBER, full_name, address) VALUES ('$SIN', '$fullname', '$address');";
-$insert_customer_and_booking_query .= "INSERT INTO booking (SIN_NUMBER, room_id, start_date, end_date) VALUES ('$SIN', '$room_id', '$startDate', '$endDate');";
-
 $new_customer = array("sin_number" => $SIN, "full_name" => $fullname, "address" => $address);
 $new_booking = array("sin_number" => $SIN, "room_id" => $room_id, "start_date" => $startDate, "end_date" => $endDate);
 
