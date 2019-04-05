@@ -29,12 +29,11 @@
         Price:
         <?php
             // include $_SERVER["DOCUMENT_ROOT"] . '/php/database.php';
-            $price = 24;
+            $price = 13;
             // $get_room_price_query = pg_query('SET search_path = "HotelSystem"; SELECT price FROM room WHERE room_id=1');
             // while ($price_array = pg_fetch_row($get_room_price_query, null, PGSQL_NUM)){
             //      $price = (int)$price_array[0]; 
             // }
-            echo $price;
             
             '<script type="text/javascript">
                 console.log("reached");
