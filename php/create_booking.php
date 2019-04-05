@@ -1,5 +1,4 @@
 <?php
-echo '<script>console.log("Made it to create_booking")</script>';
 include $_SERVER['DOCUMENT_ROOT'] . "/php/database.php";
 
 $room_id = $_POST['room_id'];

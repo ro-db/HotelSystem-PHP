@@ -12,19 +12,18 @@
 
         <h3>Rent room dates:</h3>
         
-        <form id="requestBookingForm">
+        <form method='POST'>
 
-        <label for="start date:">Start date:</label>
-        <input type="date" name="startdate" id="startdate" />
+        <label>Start date:</label>
+        <input type="date" name="startDate" />
         <br/>
-        <label for="enddate:">End date :</label>
-        <input type="date" name="enddate" id="enddate" />
+        <label>End date :</label>
+        <input type="date" name="endDate" />
+        
+        <button type="submit" value="submit">Submit</button>
+        
         </form>
         
-        <button id="submitFormButton" type="submit" value="submit" form="requestBookingForm">
-            Submit
-        </button>
-   
         <br/>
         Price:
         <?php

@@ -52,7 +52,6 @@
 
 <br/>
 
-We need to search for:<br/><br/>
 <ul>
 
 <?php
