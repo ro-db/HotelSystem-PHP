@@ -9,6 +9,9 @@ $address = $_POST['address'];
 
 echo "Inserting: room id=$room_id, SIN=$SIN, fullname=$fullname, address=$address";
 
+pg_free_result($result);
+pg_close($dbconn);
+
 header("Location:/index.html");
 exit();
 ?>

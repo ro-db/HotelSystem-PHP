@@ -18,6 +18,9 @@
                 echo "<option value=$city>$city</option>\n";
               }
   
+            pg_free_result($result);
+            pg_close($dbconn);
+
             ?>
         </select><br/>
         Minimum Star Rating: <input type="number" name="minimumStars" value="0"/><br/>
@@ -36,6 +39,9 @@
                 echo "<option value=$hotel_chain_id>$hotel_chain_address</option>\n";
             }
 
+            pg_free_result($result);
+            pg_close($dbconn);
+            
             ?>
 
         </select><br/>
@@ -49,13 +55,10 @@
 We need to search for:<br/><br/>
 <ul>
 <?php
-echo "City: " . $_POST['city'] . "<br/>";
-echo "Minimum Starts: " . $_POST['minimumStars'] . "<br/>";
-echo "minimum Capacity: " . $_POST['minimumCapacity'] . "<br/>";
-echo "Hotel Chain: " . $_POST['hotelChain'] . "<br/>";
-echo "Minimum number of Rooms: " . $_POST['minimumRooms'] . "<br/>";
-echo "Maximum Price: " . $_POST['maximumPrice'] . "<br/>";
-include $_SERVER['DOCUMENT_ROOT'] . "/php/database.php";
+
+if(empty($_POST)) {
+    return;
+}
 
 $city = $_POST['city'];
 $minimumStars = $_POST['minimumStars'];
@@ -63,6 +66,15 @@ $minimumCapacity = $_POST['minimumCapacity'];
 $hotelChain = $_POST['hotelChain'];
 $minimumRooms = $_POST['minimumRooms'];
 $maximumPrice = $_POST['maximumPrice'];
+
+// echo "City: " . $city . "<br/>";
+// echo "Minimum Starts: " . $minimumStars . "<br/>";
+// echo "minimum Capacity: " . $minimumCapacity . "<br/>";
+// echo "Hotel Chain: " . $hotelChain . "<br/>";
+// echo "Minimum number of Rooms: " . $minimumRooms . "<br/>";
+// echo "Maximum Price: " . $maximumPrice . "<br/>";
+
+include $_SERVER['DOCUMENT_ROOT'] . "/php/database.php";
 
 $room_query = "SELECT hotel_id FROM hotel WHERE city='$city'";
 
@@ -102,6 +114,9 @@ while ($room = pg_fetch_row($result, null, PGSQL_ASSOC)) {
     echo "</form>";
 
 }
+
+pg_free_result($result);
+pg_close($dbconn);
 
 ?>
 </ul>
