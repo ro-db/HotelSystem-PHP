@@ -117,6 +117,8 @@ if(pg_num_rows($result) > 0) {
         echo "</li>";
 
     }
+} else {
+    echo "No rooms found.<br/>";
 }
 
 pg_free_result($result);
