@@ -64,29 +64,29 @@ $hotelChain = $_POST['hotelChain'];
 $minimumRooms = $_POST['minimumRooms'];
 $maximumPrice = $_POST['maximumPrice'];
 
-$room_query = "SET search_path = 'HotelSystem'; SELECT * FROM room WHERE city=$city";
+$room_query = "SELECT hotel_id FROM hotel WHERE city='$city'";
 
 if($minimumStars > 0) {
-    $room_query = $room_query . " AND (SELECT hotel_id, stars FROM hotel WHERE (hotel.hotel_id = room.hotel_id AND hotel.stars >= $minimumStars))";
+    // $room_query = $room_query . " AND (SELECT hotel_id, stars FROM hotel WHERE (hotel.hotel_id = room.hotel_id AND hotel.stars >= $minimumStars))";
 }
 
 if($minimumCapacity > 0) {
-    $room_query = $room_query . " AND capacity >= $minimumCapacity";
+    // $room_query = $room_query . " AND capacity >= $minimumCapacity";
 }
 
 if($hotelChain != "Any") {
-    $room_query = $room_query . " AND (SELECT hotel_id, hotel_chain_id FROM hotel_chain WHERE (hotel_chain.hotel_id = room.hotel_id AND hotel_chain.hotel_chain_id = $hotelChain))";
+    // $room_query = $room_query . " AND (SELECT hotel_id, hotel_chain_id FROM hotel_chain WHERE (hotel_chain.hotel_id = room.hotel_id AND hotel_chain.hotel_chain_id = $hotelChain))";
 }
 
 if($minimumRooms > 0) {
-    $room_query = $room_query . " AND (SELECT hotel_id, number_of_rooms FROM hotel WHERE (hotel.hotel_id = room.hotel_id AND hotel.number_of_rooms = $minimumRooms))";
+    // $room_query = $room_query . " AND (SELECT hotel_id, number_of_rooms FROM hotel WHERE (hotel.hotel_id = room.hotel_id AND hotel.number_of_rooms = $minimumRooms))";
 }
 
 if($maximumPrice > 0) {
-    $room_query = $room_query . " AND price <= $maximumPrice";
+    // $room_query = $room_query . " AND price <= $maximumPrice";
 }
 
-$result = pg_query($room_query . ";");
+$result = pg_query("SET search_path = 'HotelSystem'; " . $room_query . ";");
 
 while ($room = pg_fetch_row($result, null, PGSQL_ASSOC)) {
 
@@ -94,10 +94,12 @@ while ($room = pg_fetch_row($result, null, PGSQL_ASSOC)) {
     $price = $room['price'];
     $capacity = $room['capacity'];
 
+    echo "<form>\n";
     echo "<li>\n";
     echo "Room: $room_number | Price: \$$price | Capacity: $capacity";
     echo "<button>Book</button>";
     echo "<li>";
+    echo "</form>";
 
 }
 
