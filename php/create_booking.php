@@ -15,20 +15,17 @@ $SIN = $_POST['SIN'];
 $fullname = $_POST['fullname'];
 $address = $_POST['address'];
 
-// echo '<script>console.log("Inserting: room id="$room_id", SIN="$SIN", fullname="$fullname", address="$address"")</script>\n';
-
 include $_SERVER['DOCUMENT_ROOT'] . "/php/database.php";
-
-// pg_query("set search_path='public'; INSERT INTO test (first) VALUES ('12');");
-
-// ("sin_number", full_name, address)
-// (sin_number, room_id, start_date, end_date)
-
-// INSERT INTO customer VALUES ($SIN, \'$fullname\', \'$address\'); INSERT INTO booking VALUES ($SIN, $room_id, \'$startDate\', \'$endDate\');';
 
 $insert_customer_and_booking_query = 'SET search_path = "HotelSystem";';
 $insert_customer_and_booking_query .= "INSERT INTO customer (SIN_NUMBER, full_name, address) VALUES ('$SIN', '$fullname', '$address');";
 $insert_customer_and_booking_query .= "INSERT INTO booking (SIN_NUMBER, room_id, start_date, end_date) VALUES ('$SIN', '$room_id', '$startDate', '$endDate');";
+
+$new_customer = array("sin_number" => $SIN, "full_name" => $fullname, "address" => $address);
+$new_booking = array("sin_number" => $SIN, "room_id" => $room_id, "start_date" => $startDate, "end_date" => $endDate);
+
+pg_insert($dbconn, "HotelSystem.customer", $new_customer);
+pg_insert($dbconn, "HotelSystem.booking", $new_booking);
 
 pg_close($dbconn);
 
