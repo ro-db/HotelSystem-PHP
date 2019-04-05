@@ -17,7 +17,7 @@
         Full Name: <input name="fullname" type="text"/><br/>
         Address: <input name="address" type="address"/><br/>
         <!-- date -->
-        <button type="button" formaction="/customer/book.php">Book</button>
+        <button type="submit" formaction="/customer/book.php">Complete Booking</button>
         
 </form>
 

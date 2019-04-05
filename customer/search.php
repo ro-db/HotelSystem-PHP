@@ -103,16 +103,18 @@ $result = pg_query("SET search_path = 'HotelSystem'; " . $room_query . ";");
 if(pg_num_rows($result) > 0) {
     while ($room = pg_fetch_row($result, null, PGSQL_ASSOC)) {
         
+        $room_id = $room['room_id'];
         $room_number = $room['room_number'];
         $price = $room['price'];
         $capacity = $room['capacity'];
 
-        echo "<form>\n";
         echo "<li>\n";
+        echo "<form method='POST'>\n";
+        echo "<input type='hidden' name='room_id' value='$room_id'/>";
         echo "Room: $room_number | Price: \$$price | Capacity: $capacity";
-        echo "<button>Book</button>";
-        echo "</li>";
+        echo "<butto type='submit' formaction='/customer/book.php'n>Book</button>";
         echo "</form>";
+        echo "</li>";
 
     }
 }
