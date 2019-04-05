@@ -15,7 +15,7 @@
 
             while ($cities_array = pg_fetch_row($result, null, PGSQL_NUM)) {
                 $city = $cities_array[0];
-                echo "<option value=$city>$city</option>\n";
+                echo "<option value='$city'>$city</option>\n";
               }
   
             pg_free_result($result);
@@ -101,9 +101,11 @@ if($maximumPrice > 0) {
     $room_query .= " AND price <= '$maximumPrice'";
 }
 
+$room_query = "SET search_path = 'HotelSystem'; " . $room_query . ";";
+
 include $_SERVER['DOCUMENT_ROOT'] . "/php/database.php";
 
-$result = pg_query("SET search_path = 'HotelSystem'; " . $room_query . ";");
+$result = pg_query($room_query);
 
 if(pg_num_rows($result) > 0) {
     while ($room = pg_fetch_row($result, null, PGSQL_ASSOC)) {
