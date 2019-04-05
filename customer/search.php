@@ -54,6 +54,7 @@
 
 We need to search for:<br/><br/>
 <ul>
+
 <?php
 
 if(empty($_POST)) {
@@ -74,29 +75,33 @@ $maximumPrice = $_POST['maximumPrice'];
 // echo "Minimum number of Rooms: " . $minimumRooms . "<br/>";
 // echo "Maximum Price: " . $maximumPrice . "<br/>";
 
-include $_SERVER['DOCUMENT_ROOT'] . "/php/database.php";
-
-$room_query = "SELECT hotel_id FROM hotel WHERE city='$city'";
+if(strcmp($hotelChain, "Any")) {
+    $room_query = "SELECT DISTINCT * FROM room NATURAL JOIN hotel WHERE city='$city'";
+} else {
+    $room_query = "SELECT DISTINCT * FROM room NATURAL JOIN hotel, hotel_chain WHERE city = '$city' AND hotel_chain.address = '$hotelChain'";
+}
 
 if($minimumStars > 0) {
     // $room_query = $room_query . " AND (SELECT hotel_id, stars FROM hotel WHERE (hotel.hotel_id = room.hotel_id AND hotel.stars >= $minimumStars))";
+    $room_query .= " AND >= $minimumStars";
 }
 
 if($minimumCapacity > 0) {
     // $room_query = $room_query . " AND capacity >= $minimumCapacity";
-}
-
-if($hotelChain != "Any") {
-    // $room_query = $room_query . " AND (SELECT hotel_id, hotel_chain_id FROM hotel_chain WHERE (hotel_chain.hotel_id = room.hotel_id AND hotel_chain.hotel_chain_id = $hotelChain))";
+    $room_query .= " AND capacity >= '$minimumCapacity'";
 }
 
 if($minimumRooms > 0) {
     // $room_query = $room_query . " AND (SELECT hotel_id, number_of_rooms FROM hotel WHERE (hotel.hotel_id = room.hotel_id AND hotel.number_of_rooms = $minimumRooms))";
+    $room_query .= " AND number_of_rooms >= '$minimumRooms'";
 }
 
 if($maximumPrice > 0) {
     // $room_query = $room_query . " AND price <= $maximumPrice";
+    $room_query .= " AND price <= '$maximumPrice'";
 }
+
+include $_SERVER['DOCUMENT_ROOT'] . "/php/database.php";
 
 $result = pg_query("SET search_path = 'HotelSystem'; " . $room_query . ";");
 
@@ -112,7 +117,7 @@ if(pg_num_rows($result) > 0) {
         echo "<form method='POST'>\n";
         echo "<input type='hidden' name='room_id' value='$room_id'/>";
         echo "Room: $room_number | Price: \$$price | Capacity: $capacity";
-        echo "<butto type='submit' formaction='/customer/book.php'n>Book</button>";
+        echo "<button type='submit' formaction='/customer/book.php'n>Book</button>";
         echo "</form>";
         echo "</li>";
 
