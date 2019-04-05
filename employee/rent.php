@@ -50,6 +50,8 @@
             echo $price . "<br/>";
             echo "\tStart Date: " . $_POST["startDate"] . "<br/>";
             echo "\tEnd Date: " . $_POST["endDate"]. "<br/>";
+            // pg_free_result($result);
+            // pg_close($dbconn);            
           ?>
 
     </body>
