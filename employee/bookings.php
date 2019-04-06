@@ -26,6 +26,8 @@
         echo "<li>\n";
         echo "<form method='POST'>\n";
         echo "<input type='hidden' name='booking_id' value='$booking_id'/>\n";
+        echo "<input type='hidden' name='customer_sin' value='$customer_sin'/>\n";
+        echo "<input type='hidden' name='room_id' value='$room_id'/>\n";
         echo "<input type='hidden' name='start_date' value='$start_date'/>\n";
         echo "<input type='hidden' name='end_date' value='$end_date'/>\n";
         echo "Customer SIN: $customer_sin<br/>\n";
