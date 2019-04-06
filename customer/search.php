@@ -6,7 +6,7 @@
     <body>
         <h3>Search for a hotel room:</h3>
         <form id="searchRoomForm" method="POST">
-        City: <select name="city">
+        City: <select name="city" valuue>
             <?php
             include $_SERVER['DOCUMENT_ROOT'] . "/php/database.php";
             
@@ -15,7 +15,7 @@
 
             while ($cities_array = pg_fetch_row($result, null, PGSQL_NUM)) {
                 $city = $cities_array[0];
-                echo "<option value='$city'>$city</option>\n";
+                echo "<option value='$city' ". ((isset($_POST['city']) && strcmp($_POST['city'], $city) == 0)? 'selected="selected"':'') .">$city</option>\n";
               }
   
             pg_free_result($result);
@@ -23,10 +23,11 @@
 
             ?>
         </select><br/>
-        Minimum Star Rating: <input type="number" name="minimumStars" value="0"/><br/>
-        Minimum Capacity: <input type="number" name="minimumCapacity" value="0"/><br/>
+        Minimum Star Rating: <input type="number" name="minimumStars" value="<?php echo isset($_POST['minimumStars'])? $_POST['minimumStars']:0; ?>"/><br/>
+        Minimum Capacity: <input type="number" name="minimumCapacity" value="<?php echo isset($_POST['minimumCapacity'])? $_POST['minimumCapacity']:0; ?>"/><br/>
         Hotel Chain: <select name="hotelChain">
-            <option value="">Any</option>
+            <!-- value="Any" has to be here. This can also be value="", not entirely sure why... -->
+            <option value="Any">Any</option>
         <?php
             include $_SERVER['DOCUMENT_ROOT'] . "/php/database.php";
             
@@ -36,7 +37,7 @@
             while($hotel_chain_array = pg_fetch_row($result, null, PGSQL_ASSOC)) {
                 $hotel_chain_id = $hotel_chain_array["hotel_chain_id"];
                 $hotel_chain_address = $hotel_chain_array["address"];
-                echo "<option value=$hotel_chain_id>$hotel_chain_address</option>\n";
+                echo "<option value=$hotel_chain_id ". ((isset($_POST['hotelChain']) && strcmp($_POST['hotelChain'], $hotel_chain_id) == 0)? 'selected="selected"':'') .">$hotel_chain_address</option>\n";
             }
 
             pg_free_result($result);
@@ -45,8 +46,8 @@
             ?>
 
         </select><br/>
-        Minimum number of Rooms: <input type="number" name="minimumRooms" value="0"/><br/>
-        Maximum Price: <input type="number" name="maximumPrice" value="0"/><br/>
+        Minimum number of Rooms: <input type="number" name="minimumRooms" value="<?php echo isset($_POST['minimumRooms'])? $_POST['minimumRooms']:0; ?>"/><br/>
+        Maximum Price: <input type="number" name="maximumPrice" value="<?php echo isset($_POST['maximumPrice'])? $_POST['maximumPrice']:0; ?>"/><br/>
         <input type="submit" value="Search"/>
 </form>
 
@@ -67,40 +68,29 @@ $hotelChain = $_POST['hotelChain'];
 $minimumRooms = $_POST['minimumRooms'];
 $maximumPrice = $_POST['maximumPrice'];
 
-// echo "City: " . $city . "<br/>";
-// echo "Minimum Starts: " . $minimumStars . "<br/>";
-// echo "minimum Capacity: " . $minimumCapacity . "<br/>";
-// echo "Hotel Chain: " . $hotelChain . "<br/>";
-// echo "Minimum number of Rooms: " . $minimumRooms . "<br/>";
-// echo "Maximum Price: " . $maximumPrice . "<br/>";
-
 if(strcmp($hotelChain, "Any")) {
     $room_query = "SELECT DISTINCT * FROM room NATURAL JOIN hotel WHERE city='$city'";
 } else {
-    $room_query = "SELECT DISTINCT * FROM room NATURAL JOIN hotel, hotel_chain WHERE city = '$city' AND hotel_chain.address = '$hotelChain'";
+    $room_query = "SELECT DISTINCT * FROM room NATURAL JOIN hotel, hotel_chain WHERE hotel.city = '$city' AND hotel_chain.address = '$hotelChain'";
 }
 
 if($minimumStars > 0) {
-    // $room_query = $room_query . " AND (SELECT hotel_id, stars FROM hotel WHERE (hotel.hotel_id = room.hotel_id AND hotel.stars >= $minimumStars))";
-    $room_query .= " AND >= $minimumStars";
+    $room_query .= " AND >= ".$minimumStars;
 }
 
 if($minimumCapacity > 0) {
-    // $room_query = $room_query . " AND capacity >= $minimumCapacity";
-    $room_query .= " AND capacity >= '$minimumCapacity'";
+    $room_query .= " AND capacity >= ".$minimumCapacity;
 }
 
 if($minimumRooms > 0) {
-    // $room_query = $room_query . " AND (SELECT hotel_id, number_of_rooms FROM hotel WHERE (hotel.hotel_id = room.hotel_id AND hotel.number_of_rooms = $minimumRooms))";
-    $room_query .= " AND number_of_rooms >= '$minimumRooms'";
+    $room_query .= " AND number_of_rooms >= ".$minimumRooms;
 }
 
 if($maximumPrice > 0) {
-    // $room_query = $room_query . " AND price <= $maximumPrice";
-    $room_query .= " AND price <= '$maximumPrice'";
+    $room_query .= " AND price <= ".$maximumPrice;
 }
 
-$room_query = "SET search_path = 'HotelSystem'; " . $room_query . ";";
+$room_query = 'SET search_path = "HotelSystem"; ' . $room_query . ';';
 
 include $_SERVER['DOCUMENT_ROOT'] . "/php/database.php";
 
