@@ -2,7 +2,6 @@
 <html>
     <head>
         <title>Rent</title>
-        <script type="text/javascript" src="/javascript/form_handler.js"></script>
     </head>
 
     <body>
@@ -13,19 +12,31 @@
         <h3>Rent room dates:</h3>
         
         <form method='POST' id="requestBookingForm">
+            <label>Customer SIN: </label>
+            <input name="SIN" required="required" type="number" pattern="[0-9]{9,9}"/><br/>
 
+            <label>Customer Name:</label>
+            <input name="fullname" required="required" type="text"/><br/>
+
+            <label>Customer Address: </label>
+            <input name="address" required="required" type="address"/><br/>
+           
             <label>Start date:</label>
-            <input type="date" name="startDate" value=<?php echo $_POST['startDate'];?> />
-            <br/>
+            <input type="date" name="startDate" value=<?php echo $_POST['startDate'];?> /><br/>
+
             <label>End date :</label>
-            <input type="date" name="endDate" value=<?php echo $_POST['endDate'];?> />
-            <br/>
+            <input type="date" name="endDate" value=<?php echo $_POST['endDate'];?> /><br/>
+
             <button type="submit" name="submit" value="submit">Submit</button>
         
         </form>
 
         <?php
             $today =  date('Y-m-d H:i:s');
+
+            $sin = $_POST['SIN'];
+            $fullname = $_POST['fullname'];
+            $address = $_POST['address'];
 
             if ( isset($_POST['submit']) ){
                 $startDate = $_POST['startDate'];
@@ -60,6 +71,27 @@
 
         <br/>
         Price:<?php echo" ". $price ?>
+
+        <form id="createRentingForm">
+            <button type='submit' name="submit" formaction='/php/rent_complete.php'n>Rent</button>
+        </form>
+
+        <?php
+            if ( isset($_POST['submit']) ){
+                
+                include $_SERVER['DOCUMENT_ROOT'] . "/php/database.php";
+            
+                $create_renting=pg_query('SET search_path="HotelSystem"; INSERT INTO rental (sin, room_id, start_date, end_date, price) 
+                                        VALUES ($customer_sin, $room_id, $start_date, $end_date, $price)');
+                
+                pg_close($dbconn);
+            
+                exit();
+
+            }
+        ?>
+
+
     </body>
 
 </html>
