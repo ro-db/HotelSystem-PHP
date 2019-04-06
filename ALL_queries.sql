@@ -30,32 +30,32 @@ CREATE TABLE room(room_number INT,
 				  FOREIGN KEY (hotel_id) REFERENCES hotel (hotel_id)
 				  );
 
-CREATE TABLE customer(SIN INT PRIMARY KEY,
-					  full_name VARCHAR,
-					  address VARCHAR
-					 );
-
 CREATE TABLE employee(employee_id INT PRIMARY KEY,
 					  full_name VARCHAR,
 					  role_pos VARCHAR
 					 );
 
+CREATE TABLE customer(SIN_NUMBER INT PRIMARY KEY,
+					  full_name VARCHAR,
+					  address VARCHAR
+					 );
+
 CREATE TABLE booking (booking_id SERIAL PRIMARY KEY, 
-					  SIN INT, 
+					  SIN_NUMBER INT, 
 					  room_id INT,
 					  start_date  DATE,
                       end_date DATE,
-					  FOREIGN KEY (SIN) REFERENCES customer (SIN),
+					  FOREIGN KEY (SIN_NUMBER) REFERENCES customer (SIN_NUMBER),
 					  FOREIGN KEY (room_id) REFERENCES room (room_id)
 					 );
 
 CREATE TABLE rental (rental_id SERIAL PRIMARY KEY,
-					 SIN INT,
+					 SIN_NUMBER INT,
 					 room_id INT,
 					 start_date DATE,
 					 end_date DATE,
 					 price INT,
-					 FOREIGN KEY (SIN) REFERENCES customer (SIN),
+					 FOREIGN KEY (SIN_NUMBER) REFERENCES customer (SIN_NUMBER),
 					 FOREIGN KEY (room_id) REFERENCES room (room_id)
 					);
 
