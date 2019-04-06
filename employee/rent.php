@@ -23,7 +23,7 @@
             <button type="submit" name="submit" value="submit">Submit</button>
         
         </form>
-        
+
         <?php
             $today =  date('Y-m-d H:i:s');
 
@@ -31,11 +31,8 @@
                 $startDate = $_POST['startDate'];
                 $endDate = $_POST['endDate'];
                 
-                echo "<br/>";
                 if($startDate < $today){
-                    $startDate = date('Y-m-d');
-                    echo "start date is: ".$startDate;
-                    
+                    $startDate = date('Y-m-d');                    
                 }
                 if ($endDate < $today){
                     $endDate = date('Y-m-d');
@@ -43,17 +40,26 @@
                 if ($endDate < $startDate){
                     $endDate = $startDate;
                 }
+                
+                $datesDifference =  floor(abs(strtotime($endDate) - strtotime($startDate)) / 86400);
+
                 $_POST['startDate'];
                 $_POST['endDate'];
+
+                // calculate price
+                include $_SERVER['DOCUMENT_ROOT'] . "/php/database.php";
+
+                $room_price = pg_query('SET search_path="HotelSystem"; SELECT price FROM room WHERE room_id=4;');
+                while ($price_array = pg_fetch_row($room_price, null, PGSQL_NUM)){
+                    $price_per_stay = $price_array[0];
+                }
+                $price = $datesDifference * $price_per_stay;
+                pg_close($dbconn);
             }
-            
-            
         ?>
 
         <br/>
-        Price:
-
-
+        Price:<?php echo" ". $price ?>
     </body>
 
 </html>
