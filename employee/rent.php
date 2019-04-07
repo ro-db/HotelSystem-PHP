@@ -65,7 +65,7 @@
 
             $room_price = pg_query('SET search_path="HotelSystem"; SELECT price FROM room WHERE room_id=\''.$room_id.'\';');
             $price_array = pg_fetch_row($room_price, null, PGSQL_NUM);
-            $price_per_stay = $price_array[0][0]; // Should be 1 row because we search by primary key.
+            $price_per_stay = $price_array[0]; 
              
             $price = $datesDifference * $price_per_stay;
 

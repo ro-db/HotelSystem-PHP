@@ -26,5 +26,5 @@ Rent is complete.
 
 <!-- TODO: Make this work, WITHOUT form -->
 <button> 
-    <a href="/">Home<span></span></a>
+    <a href="/">Return to home page<span></span></a>
 </button>
