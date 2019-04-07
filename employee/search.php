@@ -2,11 +2,15 @@
 <html lang="en">
     <head>
         <title>Search for Room</title>
+        <link rel="stylesheet" type="text/css" href="/style/search.css">
     </head>
     <body>
+        <section class="container">
+        <div class="vertical-pane">
         <h3>Search for a hotel room:</h3>
         <form method="POST">
-        City: <select name="city">
+            <input type="hidden" name="action" value="fullSearch"/>
+            City: <select name="city">
             <?php
             include $_SERVER['DOCUMENT_ROOT'] . "/php/database.php";
             
@@ -49,17 +53,48 @@
         Minimum number of Rooms: <input type="number" name="minimumRooms" value="<?php echo isset($_POST['minimumRooms'])? $_POST['minimumRooms']:0; ?>"/><br/>
         Maximum Price: <input type="number" name="maximumPrice" value="<?php echo isset($_POST['maximumPrice'])? $_POST['maximumPrice']:0; ?>"/><br/>
         <input type="submit" value="Search"/>
-</form>
+        </form>
+        </div>
+        <div class="vertical-pane">
+            <h3>Show rooms in area:</h3>
+            <form method="POST">
+            <input type="hidden" name="action" value="citiesInArea"/>
+            City: <select name="city">
+            <?php
+            include $_SERVER['DOCUMENT_ROOT'] . "/php/database.php";
+            
+            $city_query = 'SET search_path="HotelSystem"; SELECT DISTINCT city FROM hotel;';
+            $result = pg_query($city_query);
+
+            while ($cities_array = pg_fetch_row($result, null, PGSQL_NUM)) {
+                $city = $cities_array[0];
+                echo "<option value='$city' ". ((isset($_POST['city']) && strcmp($_POST['city'], $city) == 0)? 'selected="selected"':'') .">$city</option>\n";
+              }
+  
+            pg_free_result($result);
+            pg_close($dbconn);
+
+            ?>
+            </select><br/>
+            <input type="submit" value="Show Rooms"/>
+            </form>
+        </div>
+    </section>
 
 <br/>
 
-<ul>
+<ul class="search-result">
 
 <?php
 
-    if(empty($_POST)) {
-        return;
-    }
+if(empty($_POST)) {
+    return;
+}
+
+$action = $_POST['action'];
+
+switch($action) {
+    case 'fullSearch':
 
     $city = $_POST['city'];
     $minimumStars = $_POST['minimumStars'];
@@ -92,33 +127,42 @@
 
     $room_query = 'SET search_path = "HotelSystem"; ' . $room_query . ';';
 
-    include $_SERVER['DOCUMENT_ROOT'] . "/php/database.php";
+    break;
 
-    $result = pg_query($room_query);
+    case 'citiesInArea':
+        $city = $_POST['city'];
+        $room_query = "SET search_path = \"HotelSystem\"; SELECT DISTINCT * FROM room NATURAL JOIN hotel WHERE city='$city'";
+    break;
+}
 
-    if(pg_num_rows($result) > 0) {
-        while ($room = pg_fetch_row($result, null, PGSQL_ASSOC)) {
-            
-            $room_id = $room['room_id'];
-            $room_number = $room['room_number'];
-            $price = $room['price'];
-            $capacity = $room['capacity'];
+include $_SERVER['DOCUMENT_ROOT'] . "/php/database.php";
 
-            echo "<li>\n";
-            echo "<form method='POST'>\n";
-            echo "<input type='hidden' name='room_id' value='$room_id'/>";
-            echo "Room: $room_number | Price: \$$price | Capacity: $capacity";
-            echo "<button type='submit' formaction='/employee/rent.php'n>Book</button>";
-            echo "</form>";
-            echo "</li>";
+$result = pg_query($room_query);
 
-        }
-    } else {
-        echo "No rooms found.<br/>";
+if(pg_num_rows($result) > 0) {
+    while ($room = pg_fetch_row($result, null, PGSQL_ASSOC)) {
+        
+        $room_id = $room['room_id'];
+        $room_number = $room['room_number'];
+        $price = $room['price'];
+        $capacity = $room['capacity'];
+
+        echo "<li>\n";
+        echo "<form method='POST'>\n";
+        echo "<input type='hidden' name='room_id' value='$room_id'/>";
+        echo "Room: $room_number | Price: \$$price | Capacity: $capacity";
+        echo "\t<button type='submit' formaction='/employee/rent.php'n>Book</button>";
+        echo "</form>";
+        echo "</li>";
+
     }
+} else {
+    echo "No rooms found.<br/>";
+}
 
-    pg_free_result($result);
-    pg_close($dbconn);
+
+pg_free_result($result);
+pg_close($dbconn);
 
 ?>
 </ul>
