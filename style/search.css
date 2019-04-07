@@ -11,5 +11,6 @@
 }
 
 .search-result {
-  overflow: scroll;
+  overflow: auto;
+  height: 10em;
 }

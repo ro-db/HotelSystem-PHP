@@ -18,11 +18,7 @@ SELECT DISTINCT * FROM room NATURAL JOIN hotel, hotel_chain WHERE TRUE
 
 // Views
 
-CREATE OR REPLACE VIEW view2 AS 
+CREATE OR REPLACE VIEW room_view AS 
 	SELECT DISTINCT * FROM room NATURAL JOIN hotel WHERE
 	city = $city AND
 	capacity <= $minimumCapacity;
-
-	
-
-	

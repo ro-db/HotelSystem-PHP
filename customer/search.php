@@ -78,6 +78,33 @@
             </select><br/>
             <input type="submit" value="Show Rooms"/>
             </form>
+
+            <br/>
+
+            <form method="POST">
+            <h3>Show Room Capacities</h3>
+            <input type="hidden" name="action" value="showRoomCapacities"/>
+            Hotel to see Rooms for: <select name="hotel">
+              <?php
+              include $_SERVER['DOCUMENT_ROOT'] . "/php/database.php";
+            
+            $hotels_query = 'SET search_path="HotelSystem"; SELECT hotel_id, address FROM hotel;';
+            $result = pg_query($hotels_query);
+
+            while($hotel_array = pg_fetch_row($result, null, PGSQL_ASSOC)) {
+                $hotel_id = $hotel_array["hotel_id"];
+                $hotel_address = $hotel_array["address"];
+                echo "<option value=$hotel_id ". ((isset($_POST['hotel']) && strcmp($_POST['hotel'], $hotel_id) == 0)? 'selected="selected"':'') .">$hotel_address</option>\n";
+            }
+
+            pg_free_result($result);
+            pg_close($dbconn);
+            
+              ?>
+              <input type="submit" value="Show Room Capacities"/>
+            </select>
+        </form>
+
         </div>
     </section>
 
@@ -131,7 +158,16 @@ switch($action) {
 
     case 'citiesInArea':
         $city = $_POST['city'];
-        $room_query = "SET search_path = \"HotelSystem\"; SELECT DISTINCT * FROM room NATURAL JOIN hotel WHERE city='$city'";
+        $room_query = "SET search_path = \"HotelSystem\"; CREATE OR REPLACE VIEW room_cities_view AS 
+        SELECT DISTINCT * FROM room NATURAL JOIN hotel WHERE
+        city = '$city'; SELECT * FROM room_cities_view;";
+    break;
+
+    case 'showRoomCapacities';
+    $hotel_id = $_POST['hotel'];
+    $room_query = "SET search_path = \"HotelSystem\"; CREATE OR REPLACE VIEW room_capacities_view AS 
+	SELECT DISTINCT * FROM room NATURAL JOIN hotel WHERE
+	hotel_id = '$hotel_id'; SELECT * FROM room_capacities_view;";
     break;
 }
 
