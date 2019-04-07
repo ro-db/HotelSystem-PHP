@@ -92,8 +92,6 @@ if($maximumPrice > 0) {
 
 $room_query = 'SET search_path = "HotelSystem"; ' . $room_query . ';';
 
-echo "Query: $room_query<br/>\n";
-
 include $_SERVER['DOCUMENT_ROOT'] . "/php/database.php";
 
 $result = pg_query($room_query);
