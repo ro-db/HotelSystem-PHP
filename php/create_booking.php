@@ -25,6 +25,12 @@ pg_insert($dbconn, "HotelSystem.booking", $new_booking);
 
 pg_close($dbconn);
 
-header("Location:/index.html");
+// header("/index.html");
+// echo  "<script type="text/javascript"> location.href = '/index.html';</script>";
+
+echo '<script type="text/javascript">';
+echo 'location.href = "/index.html"';
+echo '</script>';
+
 exit();
 ?>
