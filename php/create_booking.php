@@ -11,7 +11,7 @@
 $room_id = $_POST['room_id'];
 $startDate = $_POST['startDate'];
 $endDate = $_POST['endDate'];
-$SIN = $_POST['SIN'];
+$SIN = $_POST['sin_number'];
 $fullname = $_POST['fullname'];
 $address = $_POST['address'];
 
