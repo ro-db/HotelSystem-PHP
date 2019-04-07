@@ -102,7 +102,6 @@
             
               ?>
               <br/>
-              Minimum Capacity: <input name="minimumCapacity" type="number" value="<?php echo isset($_POST['minimumCapacity'])? $_POST['minimumCapacity']:0; ?>"/><br/>
               <input type="submit" value="Show Room Capacities"/>
             </select>
         </form>
@@ -167,10 +166,9 @@ switch($action) {
 
     case 'showRoomCapacities';
     $hotel_id = $_POST['hotel'];
-    $minimumCapacity = $_POST['minimumCapacity'];
     $room_query = "SET search_path = \"HotelSystem\"; CREATE OR REPLACE VIEW room_capacities_view AS 
 	SELECT DISTINCT * FROM room NATURAL JOIN hotel WHERE
-	hotel_id = '$hotel_id' and capacity >= '$minimumCapacity'; SELECT * FROM room_capacities_view;";
+	hotel_id = '$hotel_id'; SELECT * FROM room_capacities_view;";
     break;
 }
 
