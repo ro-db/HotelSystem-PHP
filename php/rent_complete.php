@@ -24,7 +24,6 @@ pg_close($dbconn);
 Rent is complete.
 <br/>
 
-<!-- TODO: Make this work, WITHOUT form -->
 <button> 
-    <a href="/">Return to home page<span></span></a>
+    <a href="/">Return to home page</a> 
 </button>
