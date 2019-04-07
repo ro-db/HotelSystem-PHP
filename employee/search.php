@@ -75,7 +75,7 @@
     }
 
     if($minimumStars > 0) {
-        $room_query .= " AND >= ".$minimumStars;
+        $room_query .= " AND stars >= ".$minimumStars;
     }
 
     if($minimumCapacity > 0) {
