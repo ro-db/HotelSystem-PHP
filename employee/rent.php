@@ -80,6 +80,12 @@
         <?php
         if(isset($price) && $price !== 0) {
             echo "<input type='hidden' name='price' value='$price'/>\n";
+            echo "<input type='hidden' name='sin_number' value='$SIN'/>\n";
+            echo "<input type='hidden' name='room_id' value='$room_id'/>\n";
+            echo "<input type='hidden' name='startDate' value='$startDate'/>\n";
+            echo "<input type='hidden' name='endDate' value='$endDate'/>\n";
+            echo "<input type='hidden' name='fullname' value='$fullname'/>\n";
+            echo "<input type='hidden' name='address' value='$address'/>\n";
             echo "Price: $" . $price . "<br/>\n";
             echo "<button type='submit' formaction='/php/rent_complete.php'>Rent</button>\n";
         }
