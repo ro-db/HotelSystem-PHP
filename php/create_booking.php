@@ -29,7 +29,7 @@ pg_close($dbconn);
 // echo  "<script type="text/javascript"> location.href = '/index.html';</script>";
 
 echo '<script type="text/javascript">';
-echo 'location.href = "/index.html"';
+echo 'location.href = "/php/booking_confirm.php"';
 echo '</script>';
 
 exit();
