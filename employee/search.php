@@ -5,8 +5,8 @@
     </head>
     <body>
         <h3>Search for a hotel room:</h3>
-        <form id="searchRoomForm" method="POST">
-        City: <select name="city" valuue>
+        <form method="POST">
+        City: <select name="city">
             <?php
             include $_SERVER['DOCUMENT_ROOT'] . "/php/database.php";
             
@@ -68,7 +68,7 @@
     $minimumRooms = $_POST['minimumRooms'];
     $maximumPrice = $_POST['maximumPrice'];
 
-    if(strcmp($hotelChain, "Any")) {
+    if(strcmp($hotelChain, "Any") == 0) {
         $room_query = "SELECT DISTINCT * FROM room NATURAL JOIN hotel WHERE city='$city'";
     } else {
         $room_query = "SELECT DISTINCT * FROM room NATURAL JOIN hotel, hotel_chain WHERE hotel.city = '$city' AND hotel_chain.address = '$hotelChain'";
