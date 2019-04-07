@@ -65,7 +65,10 @@
 
             $room_price = pg_query('SET search_path="HotelSystem"; SELECT price FROM room WHERE room_id=\''.$room_id.'\';');
             $price_array = pg_fetch_row($room_price, null, PGSQL_NUM);
-            $price_per_stay = $price_array[0]; 
+            $price_per_stay = $price_array[0];
+
+            echo "<br/> Start date: ".$startDate ."<br/>". "End date: ".$endDate. "<br/>". "Number of days: ". $datesDifference. "<br/>". "Price per night: ". $price_per_stay. "<br/>";
+
              
             $price = $datesDifference * $price_per_stay;
 
@@ -86,7 +89,7 @@
             echo "<input type='hidden' name='endDate' value='$endDate'/>\n";
             echo "<input type='hidden' name='fullname' value='$fullname'/>\n";
             echo "<input type='hidden' name='address' value='$address'/>\n";
-            echo "Price: $" . $price . "<br/>\n";
+            echo "Final price: $" . $price . "<br/>\n";
             echo "<button type='submit' formaction='/php/rent_complete.php'>Rent</button>\n";
         }
         ?>
