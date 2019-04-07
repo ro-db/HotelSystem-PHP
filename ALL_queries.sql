@@ -40,13 +40,14 @@ CREATE TABLE customer(SIN_NUMBER INT PRIMARY KEY,
 					  address VARCHAR
 					 );
 
+-- Booking and Rental assume that customer will also be archived and never deleted.
 CREATE TABLE booking (booking_id SERIAL PRIMARY KEY, 
 					  SIN_NUMBER INT, 
 					  room_id INT,
 					  start_date  DATE,
                       end_date DATE,
 					  FOREIGN KEY (SIN_NUMBER) REFERENCES customer (SIN_NUMBER),
-					  FOREIGN KEY (room_id) REFERENCES room (room_id)
+					  checked_in BOOLEAN DEFAULT TRUE
 					 );
 
 CREATE TABLE rental (rental_id SERIAL PRIMARY KEY,
@@ -55,9 +56,28 @@ CREATE TABLE rental (rental_id SERIAL PRIMARY KEY,
 					 start_date DATE,
 					 end_date DATE,
 					 price INT,
-					 FOREIGN KEY (SIN_NUMBER) REFERENCES customer (SIN_NUMBER),
-					 FOREIGN KEY (room_id) REFERENCES room (room_id)
+					 FOREIGN KEY (SIN_NUMBER) REFERENCES customer (SIN_NUMBER)
 					);
+
+CREATE FUNCTION destroy_rooms_func() RETURNS trigger AS $destroy_rooms$
+	BEGIN
+		DELETE FROM room WHERE OLD.hotel_id = room.hotel_id;
+		RETURN NULL;
+	END;
+
+$destroy_rooms$ LANGUAGE plpgsql;
+
+CREATE TRIGGER destroy_rooms BEFORE DELETE ON hotel FOR EACH ROW EXECUTE PROCEDURE destroy_rooms_func();
+
+CREATE FUNCTION destroy_hotels_func() RETURNS trigger AS $destroy_hotels$
+	BEGIN
+		DELETE FROM hotel WHERE OLD.hotel_chain_id = hotel.hotel_chain_id;
+		RETURN NULL;
+	END;
+
+$destroy_hotels$ LANGUAGE plpgsql;
+
+CREATE TRIGGER destroy_hotels BEFORE DELETE ON hotel_chain FOR EACH ROW EXECUTE PROCEDURE destroy_hotels_func();
 
 INSERT INTO hotel_chain (hotel_chain_id,number_of_hotels,email,address,phone_number) VALUES 
 (1,5,'Johnathon77@example.com','3530 Braun Glens','958-253-0372                                      ')
