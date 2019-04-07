@@ -25,4 +25,6 @@ Rent is complete.
 <br/>
 
 <!-- TODO: Make this work, WITHOUT form -->
-<button onlick="location.href = '../index.html';" >Return to home page</button>
+<button> 
+    <a href="/">Home<span></span></a>
+</button>
