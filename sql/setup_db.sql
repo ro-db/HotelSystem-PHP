@@ -1,3 +1,5 @@
+CREATE SCHEMA IF NOT EXISTS HotelSystem;
+
 SET search_path = "HotelSystem";
 
 CREATE TABLE hotel_chain ( hotel_chain_id INT PRIMARY KEY, 
