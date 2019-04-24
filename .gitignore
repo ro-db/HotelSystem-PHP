@@ -1,1 +1,5 @@
 .db.ini
+*.swp
+
+.DS_Store
+
